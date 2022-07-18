@@ -1,0 +1,5 @@
+server: "https://matrix.server"
+room_id: "!ZJNSsOscMMCydGSmuC:matrix.server"
+user_name: "username"
+password: "password"
+poll_interval: 1000

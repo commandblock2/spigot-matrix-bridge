@@ -1,29 +1,32 @@
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
 
 class MatrixBridge : JavaPlugin() {
 
     override fun onEnable() {
-//        config.addDefault("server", "https://matrix.server:8448")
-//        config.addDefault("room_id", "!ZJNSsOscMMCydGSmuC:matrix.server")
-//
-//        config.addDefault("user_name", "username")
-//        config.addDefault("password", "password")
-//
-//        config.addDefault("poll_interval", 1000)
 
         saveDefaultConfig()
 
+        WhitelistManager.loadMapping(File(dataFolder, "whitelist.txt"))
+
         Thread {
-            MatrixChatListener.updateConnection(
+            MatrixListener.updateConnection(
                 config.getString("server")!!,
                 config.getString("room_id")!!,
                 config.getString("user_name")!!,
                 config.getString("password")!!,
                 config.get("poll_interval")!!.toString().toInt(),
-                logger,
+                config.getBoolean("manage_whitelist"),
+                this,
             )
         }.start()
 
-        server.pluginManager.registerEvents(MinecraftChatListener, this)
+        MinecraftListener.manageWhitelist = config.getBoolean("manage_whitelist")
+        server.pluginManager.registerEvents(MinecraftListener, this)
+    }
+
+    override fun onDisable() {
+        MatrixListener.logOut()
+        WhitelistManager.saveMapping()
     }
 }

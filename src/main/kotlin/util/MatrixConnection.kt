@@ -1,6 +1,5 @@
 package util
 
-import ISendMessage
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 
@@ -75,7 +74,7 @@ class MatrixConnection(
         messagePayload.addProperty("msgtype", "m.text")
         messagePayload.addProperty("body", message)
 
-        return HttpUtils.requestWithBearer("$serverName/_matrix/client/api/v1/rooms/$roomID/send/m.room.message", "POST", ast = accessToken, payload = messagePayload)
+        return HttpUtils.requestWithBearer("$serverName/_matrix/client/api/v1/rooms/$roomID/send/m.room.message", "POST", token = accessToken, payload = messagePayload)
     }
 
     fun poll(action: (String, String) -> Unit) {
@@ -85,5 +84,9 @@ class MatrixConnection(
 
             action(sender, message)
         }
+    }
+
+    fun disconnect() {
+        HttpUtils.requestWithBearer("$serverName/_matrix/client/v3/logout", "POST", token = accessToken)
     }
 }

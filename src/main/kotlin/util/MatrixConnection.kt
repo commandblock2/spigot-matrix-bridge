@@ -46,20 +46,17 @@ class MatrixConnection(
 
         cursor = response.get("next_batch").asString
 
-        try {
+        return try {
             val roomData = response
                 .get("rooms").asJsonObject
                 .get("join").asJsonObject
 
 
-
-            val messages = roomData.get(roomID).asJsonObject
-                    .get("timeline").asJsonObject
-                    .get("events").asJsonArray
-
-            return messages
+            roomData.get(roomID).asJsonObject
+                .get("timeline").asJsonObject
+                .get("events").asJsonArray
         } catch (ignored: java.lang.Exception) {
-            return JsonArray()
+            JsonArray()
         }
 
     }

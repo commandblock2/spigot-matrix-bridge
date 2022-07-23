@@ -1,5 +1,6 @@
 package util
 
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -12,7 +13,7 @@ import javax.net.ssl.HttpsURLConnection
 
 object HttpUtils {
 
-    val gson = GsonBuilder().setLenient().create()
+    private val gson: Gson = GsonBuilder().setLenient().create()
 
     fun requestWithBearer(
         url: String, method: String,

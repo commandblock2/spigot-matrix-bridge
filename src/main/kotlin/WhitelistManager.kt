@@ -3,7 +3,7 @@ import java.io.File
 object WhitelistManager {
     private val userNameMapping = HashMap<String, String>()
 
-    lateinit var file: File
+    private lateinit var file: File
 
     fun loadMapping(file: File) {
         this.file = file

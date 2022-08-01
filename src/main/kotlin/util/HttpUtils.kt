@@ -29,6 +29,7 @@ object HttpUtils {
         url: String, method: String,
         payload: JsonObject = JsonObject(),
         requestProperties: JsonObject = JsonObject(),
+        timeout: Int = -1
     ): JsonObject {
         val urlAsURL = URL(url)
         val uri = URI(
@@ -47,6 +48,9 @@ object HttpUtils {
         connection.setRequestProperty("Accept", "application/json")
         connection.setRequestProperty("Accept-Encoding", "gzip, deflate, br")
         connection.doOutput = true
+
+        if (timeout >= 0)
+            connection.readTimeout = timeout
 
         requestProperties
             .entrySet()

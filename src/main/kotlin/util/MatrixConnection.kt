@@ -30,6 +30,7 @@ class MatrixConnection(
     }
 
     private fun fetchMessages(): JsonArray {
+
         val response = HttpUtils.request(
             "$serverName/_matrix/client/r0/sync?" +
                     "filter={" +
@@ -40,13 +41,15 @@ class MatrixConnection(
                     "\"not_senders\": [\"$username\"]" +
                     "}}}&" +
                     (if (cursor.isNotEmpty()) "since=$cursor&" else "") +
-                    "access_token=$accessToken&timeout=100",
-            "GET"
+                    "access_token=$accessToken&timeout=30000",
+            "GET",
+            timeout = 50000
         )
 
         cursor = response.get("next_batch").asString
 
         return try {
+
             val roomData = response
                 .get("rooms").asJsonObject
                 .get("join").asJsonObject
@@ -66,12 +69,17 @@ class MatrixConnection(
 //            .get("displayname").asString
 //    }
 
-    fun sendMessage(message: String) :JsonObject {
+    fun sendMessage(message: String): JsonObject {
         val messagePayload = JsonObject()
         messagePayload.addProperty("msgtype", "m.text")
         messagePayload.addProperty("body", message)
 
-        return HttpUtils.requestWithBearer("$serverName/_matrix/client/api/v1/rooms/$roomID/send/m.room.message", "POST", token = accessToken, payload = messagePayload)
+        return HttpUtils.requestWithBearer(
+            "$serverName/_matrix/client/api/v1/rooms/$roomID/send/m.room.message",
+            "POST",
+            token = accessToken,
+            payload = messagePayload
+        )
     }
 
     fun poll(action: (String, String) -> Unit) {

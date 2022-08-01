@@ -15,7 +15,6 @@ class MatrixBridge : JavaPlugin() {
                 config.getString("room_id")!!,
                 config.getString("user_name")!!,
                 config.getString("password")!!,
-                config.get("poll_interval")!!.toString().toInt(),
                 config.getBoolean("manage_whitelist"),
                 this,
             )

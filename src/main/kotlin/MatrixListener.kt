@@ -41,12 +41,15 @@ object MatrixListener : ISendMessage {
                     }
                 } catch (ignored: Exception) {
                     bridge.logger.log(Level.WARNING, "Matrix connection exception: ${ignored.stackTrace.contentToString()}")
+                    ignored.printStackTrace()
+                    connection!!.disconnect()
                     updateConnection(serverName, roomID, username, password, manageWhiteList, bridge)
                 }
             }
 
         } catch (exception: Exception) {
             bridge.logger.log(Level.WARNING, exception.message)
+            exception.printStackTrace()
         }
     }
 

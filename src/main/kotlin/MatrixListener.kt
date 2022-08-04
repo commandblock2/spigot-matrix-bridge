@@ -20,6 +20,8 @@ object MatrixListener : ISendMessage {
             bridge.logger.log(Level.INFO, "Login successful")
             connection!!.sendMessage("bot login")
 
+            connection!!.poll { _, _ -> }
+
             while (true) {
                 try {
                     connection!!.poll { matrixName, message ->
@@ -33,8 +35,7 @@ object MatrixListener : ISendMessage {
                         }
 
                         MinecraftListener.sendChatMessage(
-                            // username is guaranteed to not have a @ or :
-                            "[${matrixName.substringAfter('@').substringBefore(':')}]: $message"
+                            "[${connection!!.getDisplayName(matrixName)}]: $message"
                         )
                     }
                 } catch (ignored: Exception) {

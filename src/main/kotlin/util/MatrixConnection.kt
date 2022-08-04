@@ -13,6 +13,8 @@ class MatrixConnection(
     private val accessToken: String
     private var cursor: String = ""
 
+    private val displayNameMap = HashMap<String, String>()
+
     init {
         // login
         val loginData = JsonObject()
@@ -67,10 +69,13 @@ class MatrixConnection(
 
     }
 
-//    fun getDisplayName(id: String): String {
-//        return HttpUtils.request("$serverName/_matrix/client/r0/profile/$id/displayname", "GET")
-//            .get("displayname").asString
-//    }
+    fun getDisplayName(id: String): String {
+        if (!displayNameMap.contains(id))
+            displayNameMap[id] = HttpUtils.request("$serverName/_matrix/client/r0/profile/$id/displayname", "GET")
+            .get("displayname").asString
+
+        return displayNameMap[id]!!
+    }
 
     fun sendMessage(message: String): JsonObject {
         val messagePayload = JsonObject()

@@ -4,7 +4,6 @@ I decided to write my own.
 The bridge is implemented as a spigot plugin, which act as a bot for **unencrypted** room.
 
 Currently, **E2EE** is **NOT** supported.  
-And message sync could potentially take longer.
 No command support currently.
 
 ## Setup
@@ -18,7 +17,6 @@ server: "https://matrix.server"
 room_id: "!ZJNSsOscMMCydGSmuC:matrix.server"
 user_name: "@username:home.server"
 password: "password"
-poll_interval: 1000
 
 manage_whitelist: true
 ```

@@ -26,8 +26,9 @@ object MatrixListener : ISendMessage {
                 try {
                     connection!!.poll { matrixName, message ->
 
-                        if (message.startsWith("whitelist set") && bridge.config.getBoolean("manage_whitelist")) {
-                            val split = message.split(" ")
+                        val trimmedMessage = message.trimStart().trimEnd()
+                        if (trimmedMessage.startsWith("whitelist set") && bridge.config.getBoolean("manage_whitelist")) {
+                            val split = trimmedMessage.split(" ")
                             if (split.size != 3)
                                 connection!!.sendMessage("malformed whitelist set request, please use `whitelist set name`")
                             else

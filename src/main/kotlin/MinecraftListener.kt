@@ -2,6 +2,7 @@ import io.papermc.paper.event.player.AbstractChatEvent
 import io.papermc.paper.event.player.AsyncChatEvent
 import io.papermc.paper.text.PaperComponents
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -24,8 +25,7 @@ object MinecraftListener : Listener, ISendMessage {
     @EventHandler
     fun onMinecraftChat(chatEvent: AsyncChatEvent) {
         Thread {
-            val message = Component.empty().append(chatEvent.message()).content()
-            MatrixListener.sendChatMessage("<${chatEvent.player.name}> $message")
+            MatrixListener.sendChatMessage("<${chatEvent.player.name}> ${getMessage(chatEvent.message())}")
         }.start()
     }
 
@@ -69,6 +69,7 @@ object MinecraftListener : Listener, ISendMessage {
     }
 
     private fun getMessage(component: Component?): String {
-        return Component.empty().append(component ?: Component.empty()).content()
+        component ?: return ""
+        return PlainTextComponentSerializer.plainText().serialize(component)
     }
 }

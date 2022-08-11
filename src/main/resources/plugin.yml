@@ -1,4 +1,4 @@
-name: SpigotMatrixBridge
+name: PaperMatrixBridge
 main: MatrixBridge
 version: 1.0-SNAPSHOT
 api-version: 1.16

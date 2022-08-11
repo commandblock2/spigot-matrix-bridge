@@ -1,4 +1,5 @@
-# Spigot-Matrix-Bridge
+# Paper-Matrix-Bridge
+# Note: this plugin now uses paper api
 https://github.com/commandblock2/matrix-spigot-bridge isn't buildable.
 I decided to write my own.  
 The bridge is implemented as a spigot plugin, which act as a bot for **unencrypted** room.

@@ -40,9 +40,9 @@ object MatrixListener : ISendMessage {
                         )
                     }
                 } catch (ignored: Exception) {
-                    bridge.logger.log(Level.WARNING, "Matrix connection exception: ${ignored.stackTrace.contentToString()}")
                     ignored.printStackTrace()
                     connection!!.disconnect()
+                    bridge.logger.log(Level.WARNING, "Exception thrown while running, trying to reconnect")
                     updateConnection(serverName, roomID, username, password, manageWhiteList, bridge)
                 }
             }
@@ -50,14 +50,21 @@ object MatrixListener : ISendMessage {
         } catch (exception: Exception) {
             bridge.logger.log(Level.WARNING, exception.message)
             exception.printStackTrace()
+            bridge.logger.log(Level.WARNING, "Exception thrown while trying to connect, reconnecting in 30s")
+            Thread.sleep(1000 * 30)
+            updateConnection(serverName, roomID, username, password, manageWhiteList, bridge)
+            exception.printStackTrace()
         }
     }
 
 
     fun logOut() {
+        connection ?: return
 
-        connection?.sendMessage("bot logout")
-        connection?.disconnect()
+        connection!!.sendMessage("bot logout")
+        connection!!.disconnect()
+
+        connection = null
     }
 
 

@@ -1,2 +1,2 @@
-rootProject.name = "spigot-matrix-bridge"
+rootProject.name = "paper-matrix-bridge"
 

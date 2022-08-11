@@ -2,6 +2,7 @@ package util
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import java.net.SocketTimeoutException
 import java.util.concurrent.TimeoutException
 
 class MatrixConnection(
@@ -61,10 +62,12 @@ class MatrixConnection(
             roomData.get(roomID).asJsonObject
                 .get("timeline").asJsonObject
                 .get("events").asJsonArray
-        } catch (ignored: TimeoutException) {
-            JsonArray()
-        } catch (ignored: java.lang.NullPointerException) {
-            JsonArray()
+        } catch (exception: Exception) {
+            when (exception) {
+                is SocketTimeoutException, is java.lang.NullPointerException ->
+                    JsonArray()
+                else -> throw exception
+            }
         }
 
     }
@@ -72,7 +75,7 @@ class MatrixConnection(
     fun getDisplayName(id: String): String {
         if (!displayNameMap.contains(id))
             displayNameMap[id] = HttpUtils.request("$serverName/_matrix/client/r0/profile/$id/displayname", "GET")
-            .get("displayname").asString
+                .get("displayname").asString
 
         return displayNameMap[id]!!
     }

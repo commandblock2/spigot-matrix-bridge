@@ -1,6 +1,0 @@
-server: "https://matrix.server"
-room_id: "!ZJNSsOscMMCydGSmuC:matrix.server"
-user_name: "@username:home.server"
-password: "password"
-
-manage_whitelist: true
